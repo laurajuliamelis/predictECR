@@ -3,9 +3,7 @@
 .Rapp.history
 
 # Session Data files
-.RData
-.RDataTmp
-model_objects.RData
+data/model_objects.RData
 
 # User-specific files
 .Ruserdata
