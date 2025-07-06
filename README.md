@@ -39,11 +39,11 @@ PhD Candidate · University of Barcelona
 and 
 
 **Sergi Mas Herrero**  
-Accredited Researcher · Fundació Clínic-IDIBAPS	
-Associate Professor · University of Barcelona  
+Accredited Researcher · Fundació Clínic-IDIBAPS␣␣  
+Associate Professor · University of Barcelona␣␣  
 📧 sergimash@ub.edu
 
-📧 We welcome collaboration inquiries and suggestions to improve the tool.
+We welcome collaboration inquiries and suggestions to improve the tool.
 
 ## 📜 License
 
