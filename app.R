@@ -1,5 +1,5 @@
 
-# SHINY APP: Predict EOR
+# SHINY APP: Predict ECR
 
 ## Load libraries
 library(shiny)
@@ -22,7 +22,7 @@ load("data/model_objects.Rdata")
 
 ## UI
 ui <- navbarPage(
-  title = "FarmaPRED-PEP: Early Onset Response (EOR) Predictor",
+  title = "FarmaPRED-PEP: Early Clinical Recovery (ECR) Predictor",
   theme = bs_theme(bootswatch = "flatly", base_font = font_google("Roboto"), heading_font = font_google("Poppins")),
   
   tabPanel("Prediction",
@@ -32,15 +32,15 @@ ui <- navbarPage(
                  tags$h3("Patient Inputs", style = "font-weight: bold; color: #2c3e50;"),
                  numericInput("DUP", "Duration of untreated psychosis (DUP)", value = 0, min = 0, max = 800),
                  numericInput("DTP", "Days of treated psychosis (DTP)", value = 0, min = 0, max = 400),
-                 sliderInput("EEAG", "Functioning (EEAG score)", value = 10, min = 10, max = 100, step = 1),
+                 sliderInput("EEAG", "Global Assessment of Functioning (GAF) scale", value = 10, min = 10, max = 100, step = 1),
                  numericInput("Reserva", "Cognitive reserve (z-score)", value = 0, step = 0.1),
                  sliderInput("Insight", "Insight (1 = good, 7 = poor)", min = 1, max = 7, value = 1, step = 1),
-                 numericInput("Perseveratives", "Executive function (z-score)", value = 0, step = 0.1),
+                 numericInput("Perseveratives", "Wisconsin Card Sorting Test", value = 0, step = 0.1),
                  actionButton("predict", "Enter", class = "btn btn-primary")
                ),
                mainPanel(
-                 tags$h2("Welcome to the EOR Predictor", style = "color: #3498db; font-weight: bold;"),
-                 tags$p("This application allows clinicians and researchers to estimate the probability of early onset response (EOR) to antipsychotic treatment in patients with first-episode psychosis (FEP). The data used to develop this model was the PEPS cohort from the study “Genotype-Phenotype Interaction and Environment. Application to a Predictive Model in First Psychotic Episodes” (PI08/0208), which can be found at ",
+                 tags$h2("Welcome to the ECR Predictor", style = "color: #3498db; font-weight: bold;"),
+                 tags$p("This application allows clinicians and researchers to estimate the probability of early clinical recovery (ECR) to antipsychotic treatment in patients with first-episode psychosis (FEP). The data used to develop this model was the PEPS cohort from the study “Genotype-Phenotype Interaction and Environment. Application to a Predictive Model in First Psychotic Episodes” (PI08/0208), which can be found at ",
                         tags$a(href = "https://doi.org/10.1016/j.rpsm.2012.11.001", target = "_blank", "https://doi.org/10.1016/j.rpsm.2012.11.001"), "."),
                  tags$p("The inclusion criteria of the patients were: age between 7 and 35 years at the time of the first evaluation, presence of psychotic symptoms lasting less than 12 months, speaking Spanish correctly and signing the informed consent. The exclusion criteria for the patients were: mental retardation according to the criteria of the DSM-IV60 (which includes, in addition to an intellectual coefficient below 70, functional problems), a history of head trauma with loss of consciousness and organic disease with mental repercussions."),
                  p(strong("Please, use the left panel to enter your patient characteristics and view the predicted response class.")),
@@ -53,12 +53,12 @@ ui <- navbarPage(
                    column(5, uiOutput("prob_result"))
                  ),
                  
-                 tags$h4("2. Performance of predicted EOR probability in your patient"),
-                 tags$p("This density plot helps interpret the estimated probability of Early Onset Response (EOR) for your patient by comparing it with the distribution of predicted probabilities from the reference dataset. The plot shows the probability densities for patients classified as EOR and non-EOR by the model. Your patient's predicted probability is represented by a vertical line. If this line falls closer to the EOR curve, it suggests a higher similarity to those who responded early. This visual comparison provides contextual insight into the model’s prediction."),
+                 tags$h4("2. Performance of predicted ECR probability in your patient"),
+                 tags$p("This density plot helps interpret the estimated probability of Early Clinical Recovery (ECR) for your patient by comparing it with the distribution of predicted probabilities from the reference dataset. The plot shows the probability densities for patients classified as ECR and non-ECR by the model. Your patient's predicted probability is represented by a vertical line. If this line falls closer to the ECR curve, it suggests a higher similarity to those who responded early. This visual comparison provides contextual insight into the model’s prediction."),
                  plotOutput("density_plot"),
                  
                  tags$h4("3. Variable contribution to the predicted probability"),
-                 tags$p("The SHAP force plot visually breaks down how each individual predictor contributes to the estimated probability of Early Onset Response (EOR) for your patient. Variables shown in green push the prediction higher (towards EOR), while those in red lower it (towards non-EOR). The size of each bar reflects the strength of that variable’s influence. This allows you to understand not just the outcome, but why the model reached that conclusion—highlighting which patient-specific features are most relevant to the prediction."),
+                 tags$p("The SHAP force plot visually breaks down how each individual predictor contributes to the estimated probability of Early Onset Response (ECR) for your patient. Variables shown in green push the prediction higher (towards ECR), while those in red lower it (towards non-ECR). The size of each bar reflects the strength of that variable’s influence. This allows you to understand not just the outcome, but why the model reached that conclusion—highlighting which patient-specific features are most relevant to the prediction."),
                  plotOutput("force_plot")
                )
              )
@@ -84,9 +84,9 @@ ui <- navbarPage(
         column(4, img(src = "logo_isciii.png", height = "60px"))
       ),
       br(),
-      HTML("For further information visit <a href='https://www.google.com/' target='_blank'>the publication</a> - Code available at <a href='https://github.com/laurajuliamelis/predictEOR' target='_blank'><i class='bi bi-github'></i>GitHub</a>"),
+      HTML("For further information visit <a href='https://www.google.com/' target='_blank'>the publication</a> - Code available at <a href='https://github.com/laurajuliamelis/predictECR' target='_blank'><i class='bi bi-github'></i>GitHub</a>"),
       actionButton("github_btn", label = NULL, icon = icon("github"), 
-                   onclick = "window.open('https://github.com/laurajuliamelis/predictEOR', '_blank')", 
+                   onclick = "window.open('https://github.com/laurajuliamelis/predictECR', '_blank')", 
                    style = "background-color: transparent; border: none; color: #333; font-size: 20px; margin-top: 10px;"),
       style = "width: 100%; color: black; text-align: center;"
     )
@@ -109,7 +109,7 @@ server <- function(input, output, session) {
     
     output$class_result <- renderUI({
       value_box(title = "Patient class", 
-                value = if (prob > cutoff.clin) "EOR" else "Non-EOR" , 
+                value = if (prob > cutoff.clin) "ECR" else "Non-ECR" , 
                 theme = value_box_theme(bg = if (prob > cutoff.clin){"#00a86b"} else {"#D22B2B"}, fg = "#FFFFFF"), 
                 showcase = if (prob > cutoff.clin) bsicons::bs_icon("person-fill-check")else bsicons::bs_icon("person-fill-x"), 
                 showcase_layout = "left center", 
@@ -117,13 +117,13 @@ server <- function(input, output, session) {
     })
     
     output$prob_result <- renderUI({
-      value_box(title = "Probability of EOR", value = paste0(round(prob*100, 2), "%") , 
+      value_box(title = "Probability of ECR", value = paste0(round(prob*100, 2), "%") , 
                 theme = value_box_theme(bg = "#f4f4f4", fg = "#989898"), 
                 showcase = bsicons::bs_icon("calculator"), showcase_layout = "top right", 
                 full_screen = F, fill = TRUE, height = NULL)
     })
     
-    data.clin.imp$PredResponse <- factor(data.clin.imp$PredResponse, levels = c(0, 1), labels = c("Non-EOR", "EOR"))
+    data.clin.imp$PredResponse <- factor(data.clin.imp$PredResponse, levels = c(0, 1), labels = c("Non-ECR", "ECR"))
     
     output$density_plot <- renderPlot({
       ggplot(data.clin.imp, aes(x = Prediction, fill = PredResponse, color = PredResponse)) +

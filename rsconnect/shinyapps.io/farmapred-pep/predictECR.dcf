@@ -1,0 +1,10 @@
+name: predictECR
+title:
+username: farmapred-pep
+account: farmapred-pep
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15104082
+bundleId: 10649637
+url: https://farmapred-pep.shinyapps.io/predictECR/
+version: 1

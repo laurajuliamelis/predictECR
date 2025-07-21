@@ -22,7 +22,7 @@ The study protocol can be found here: [TO BE DONE](http://www.google.com/)
 
 You can access and use the application online at the following link:
 
-👉 [https://farmapred-pep.shinyapps.io/predictEOR/](https://farmapred-pep.shinyapps.io/predictEOR/)
+👉 [https://farmapred-pep.shinyapps.io/predictECR/](https://farmapred-pep.shinyapps.io/predictECR/)
 
 No installation is required. Simply open the link in your web browser.
 
